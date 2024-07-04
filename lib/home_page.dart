@@ -10,10 +10,20 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),
-      drawer: DrawerWidget(), // Usa el cajón de navegación desde drawer_widget.dart
+      drawer: DrawerWidget(),
       body: Stack(
         children: [
-          // Aquí iría el widget de la imagen de fondo o cualquier contenido específico de la página principal
+          // Imagen de fondo
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/fondo.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            height: double.infinity,
+            width: double.infinity,
+          ),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -25,7 +35,8 @@ class HomePage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue[300],
                   ),
-                  child: const Text('Hoteles en San Marcos', style: TextStyle(fontSize: 18)),
+                  child: const Text('Hoteles en San Marcos',
+                      style: TextStyle(fontSize: 18)),
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
@@ -35,7 +46,8 @@ class HomePage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue[300],
                   ),
-                  child: Text('Hoteles en San Pedro', style: TextStyle(fontSize: 18)),
+                  child: Text('Hoteles en San Pedro',
+                      style: TextStyle(fontSize: 18)),
                 ),
               ],
             ),
