@@ -33,7 +33,6 @@ class DBHApp extends StatelessWidget {
         '/registerHotel': (context) => RegisterHotel(),
         '/help': (context) => HelpPage(),
         '/sanMarcos': (context) => SanMarcosPage(),
-
         '/sanPedro': (context) => SanPedroPage(),
       },
     );
