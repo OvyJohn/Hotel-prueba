@@ -10,46 +10,48 @@ class _RegisterHotelState extends State<RegisterHotel> {
   final _formKey = GlobalKey<FormState>();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  String? hotelName;
-  String? address;
-  String? phoneNumber;
-  String? email;
-  String? roomType;
-  int? roomCapacity;
-  double? pricePerNight;
+  final TextEditingController _hotelNameController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _roomTypeController = TextEditingController();
+  final TextEditingController _roomCapacityController = TextEditingController();
+  final TextEditingController _pricePerNightController =
+      TextEditingController();
+  final TextEditingController _checkInTimeController = TextEditingController();
+  final TextEditingController _checkOutTimeController = TextEditingController();
+  final TextEditingController _cancellationPolicyController =
+      TextEditingController();
+  final TextEditingController _idRequirementsController =
+      TextEditingController();
+
   bool wifi = false;
   bool parking = false;
   bool restaurant = false;
   bool pool = false;
   bool gym = false;
   bool spa = false;
-  String? checkInTime;
-  String? checkOutTime;
-  String? cancellationPolicy;
-  String? idRequirements;
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-
       Map<String, dynamic> hotelData = {
-        'hotelName': hotelName!,
-        'address': address!,
-        'phoneNumber': phoneNumber!,
-        'email': email!,
-        'roomType': roomType!,
-        'roomCapacity': roomCapacity!,
-        'pricePerNight': pricePerNight!,
+        'hotelName': _hotelNameController.text,
+        'address': _addressController.text,
+        'phoneNumber': _phoneNumberController.text,
+        'email': _emailController.text,
+        'roomType': _roomTypeController.text,
+        'roomCapacity': int.tryParse(_roomCapacityController.text) ?? 0,
+        'pricePerNight': double.tryParse(_pricePerNightController.text) ?? 0.0,
         'wifi': wifi,
         'parking': parking,
         'restaurant': restaurant,
         'pool': pool,
         'gym': gym,
         'spa': spa,
-        'checkInTime': checkInTime!,
-        'checkOutTime': checkOutTime!,
-        'cancellationPolicy': cancellationPolicy!,
-        'idRequirements': idRequirements!,
+        'checkInTime': _checkInTimeController.text,
+        'checkOutTime': _checkOutTimeController.text,
+        'cancellationPolicy': _cancellationPolicyController.text,
+        'idRequirements': _idRequirementsController.text,
       };
 
       _firestore.collection('hotels').add(hotelData).then((value) {
@@ -62,6 +64,22 @@ class _RegisterHotelState extends State<RegisterHotel> {
         );
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _hotelNameController.dispose();
+    _addressController.dispose();
+    _phoneNumberController.dispose();
+    _emailController.dispose();
+    _roomTypeController.dispose();
+    _roomCapacityController.dispose();
+    _pricePerNightController.dispose();
+    _checkInTimeController.dispose();
+    _checkOutTimeController.dispose();
+    _cancellationPolicyController.dispose();
+    _idRequirementsController.dispose();
+    super.dispose();
   }
 
   @override
@@ -79,6 +97,7 @@ class _RegisterHotelState extends State<RegisterHotel> {
               Text('Información básica del hotel',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               TextFormField(
+                controller: _hotelNameController,
                 decoration: InputDecoration(labelText: 'Nombre del hotel'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -86,9 +105,9 @@ class _RegisterHotelState extends State<RegisterHotel> {
                   }
                   return null;
                 },
-                onSaved: (value) => hotelName = value,
               ),
               TextFormField(
+                controller: _addressController,
                 decoration: InputDecoration(labelText: 'Dirección'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -96,9 +115,9 @@ class _RegisterHotelState extends State<RegisterHotel> {
                   }
                   return null;
                 },
-                onSaved: (value) => address = value,
               ),
               TextFormField(
+                controller: _phoneNumberController,
                 decoration: InputDecoration(labelText: 'Número de teléfono'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -106,9 +125,9 @@ class _RegisterHotelState extends State<RegisterHotel> {
                   }
                   return null;
                 },
-                onSaved: (value) => phoneNumber = value,
               ),
               TextFormField(
+                controller: _emailController,
                 decoration: InputDecoration(labelText: 'Correo electrónico'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -116,12 +135,12 @@ class _RegisterHotelState extends State<RegisterHotel> {
                   }
                   return null;
                 },
-                onSaved: (value) => email = value,
               ),
               SizedBox(height: 20),
               Text('Detalles de la habitación',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               TextFormField(
+                controller: _roomTypeController,
                 decoration: InputDecoration(labelText: 'Tipo de habitación'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -129,9 +148,9 @@ class _RegisterHotelState extends State<RegisterHotel> {
                   }
                   return null;
                 },
-                onSaved: (value) => roomType = value,
               ),
               TextFormField(
+                controller: _roomCapacityController,
                 decoration:
                     InputDecoration(labelText: 'Capacidad de la habitación'),
                 keyboardType: TextInputType.number,
@@ -141,9 +160,9 @@ class _RegisterHotelState extends State<RegisterHotel> {
                   }
                   return null;
                 },
-                onSaved: (value) => roomCapacity = int.parse(value!),
               ),
               TextFormField(
+                controller: _pricePerNightController,
                 decoration: InputDecoration(labelText: 'Precio por noche'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
@@ -152,7 +171,6 @@ class _RegisterHotelState extends State<RegisterHotel> {
                   }
                   return null;
                 },
-                onSaved: (value) => pricePerNight = double.parse(value!),
               ),
               SizedBox(height: 20),
               Text('Servicios y comodidades',
@@ -215,6 +233,7 @@ class _RegisterHotelState extends State<RegisterHotel> {
               Text('Políticas y reglas',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               TextFormField(
+                controller: _checkInTimeController,
                 decoration: InputDecoration(labelText: 'Hora de check-in'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -222,9 +241,9 @@ class _RegisterHotelState extends State<RegisterHotel> {
                   }
                   return null;
                 },
-                onSaved: (value) => checkInTime = value,
               ),
               TextFormField(
+                controller: _checkOutTimeController,
                 decoration: InputDecoration(labelText: 'Hora de check-out'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -232,9 +251,9 @@ class _RegisterHotelState extends State<RegisterHotel> {
                   }
                   return null;
                 },
-                onSaved: (value) => checkOutTime = value,
               ),
               TextFormField(
+                controller: _cancellationPolicyController,
                 decoration:
                     InputDecoration(labelText: 'Política de cancelación'),
                 validator: (value) {
@@ -243,9 +262,9 @@ class _RegisterHotelState extends State<RegisterHotel> {
                   }
                   return null;
                 },
-                onSaved: (value) => cancellationPolicy = value,
               ),
               TextFormField(
+                controller: _idRequirementsController,
                 decoration:
                     InputDecoration(labelText: 'Requisitos de identificación'),
                 validator: (value) {
@@ -254,7 +273,6 @@ class _RegisterHotelState extends State<RegisterHotel> {
                   }
                   return null;
                 },
-                onSaved: (value) => idRequirements = value,
               ),
               SizedBox(height: 20),
               ElevatedButton(

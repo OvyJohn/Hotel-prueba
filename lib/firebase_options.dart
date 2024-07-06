@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'hotel-7c147.appspot.com',
     measurementId: 'G-GM8F25VKLL',
   );
+
 }
